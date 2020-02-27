@@ -2,15 +2,10 @@ context("Tab Handling Anchor Links", () => {
   beforeEach(() => {
     cy.visit("/");
   });
-  
-  // About  
+
+  // About
   describe('testing the target="/about" link', () => {
     it("verify the href", () => {
-      // We verify that the <a> has the right href
-      cy.contains("About")
-        .should("have.attr", "href")
-        .and("include", "/about");
-
       // an <a> also has an 'href' property which always resolves
       // to the fully qualified URL. by asserting on this property
       // we are testing this element more thoroughly
@@ -44,10 +39,6 @@ context("Tab Handling Anchor Links", () => {
   describe('testing the target="/customers" link', () => {
     it("verify the href", () => {
       cy.contains("Customers")
-        .should("have.attr", "href")
-        .and("include", "/customers");
-
-      cy.contains("Customers")
         .should("have.prop", "href")
         .and("equal", "https://restream.io/customers");
     });
@@ -70,10 +61,6 @@ context("Tab Handling Anchor Links", () => {
   // Pricing
   describe('testing the target="/pricing" link', () => {
     it("verify the href", () => {
-      cy.contains("Pricing")
-        .should("have.attr", "href")
-        .and("include", "/pricing");
-
       cy.contains("Pricing")
         .should("have.prop", "href")
         .and("equal", "https://restream.io/pricing");
