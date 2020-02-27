@@ -3,6 +3,7 @@ context("Tab Handling Anchor Links", () => {
     cy.visit("/");
   });
 
+  // About
   describe('testing the target="/about" link', () => {
     it("verify the href", () => {
       // We verify that the <a> has the right href
@@ -30,7 +31,10 @@ context("Tab Handling Anchor Links", () => {
 
           // drill into the response body
           // and assert that its contents have the <title> response
-          expect(resp.body).to.include("<title>", "About us");
+          expect(resp.body).to.include(
+            "<title>About Us | Restream</title>",
+            "Restream allows you to broadcast live video to 30+ social networks at the same time."
+          );
         });
       });
     });
