@@ -3,6 +3,32 @@ context("Tab Handling Anchor Links", () => {
     cy.visit("/");
   });
 
+  // Multistreaming
+  describe('testing the target="/multistreaming" link', () => {
+    it("verify the href", () => {
+      cy.contains("Multistreaming").should($a => {
+        expect($a).to.be.hidden;
+        expect($a).to.have.prop("href");
+        expect($a.prop("href")).eq("https://restream.io/multistreaming");
+      });
+    });
+
+    it("request without visiting", () => {
+      cy.contains("Multistreaming").then($a => {
+        const href = $a.prop("href");
+
+        cy.request(href).then(resp => {
+          expect(resp.status).to.eq(200);
+
+          expect(resp.body).to.include(
+            "<title>Reach a Wider Audience with Multistreaming | Restream</title>",
+            "Reach a wider audience by streaming to multiple platforms simultaneously."
+          );
+        });
+      });
+    });
+  });
+
   // About
   describe('testing the target="/about" link', () => {
     it("verify the href", () => {
