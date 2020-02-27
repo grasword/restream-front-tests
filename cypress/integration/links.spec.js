@@ -2,8 +2,8 @@ context("Tab Handling Anchor Links", () => {
   beforeEach(() => {
     cy.visit("/");
   });
-
-  // About
+  
+  // About  
   describe('testing the target="/about" link', () => {
     it("verify the href", () => {
       // We verify that the <a> has the right href
@@ -34,6 +34,60 @@ context("Tab Handling Anchor Links", () => {
           expect(resp.body).to.include(
             "<title>About Us | Restream</title>",
             "Restream allows you to broadcast live video to 30+ social networks at the same time."
+          );
+        });
+      });
+    });
+  });
+
+  // Customers
+  describe('testing the target="/customers" link', () => {
+    it("verify the href", () => {
+      cy.contains("Customers")
+        .should("have.attr", "href")
+        .and("include", "/customers");
+
+      cy.contains("Customers")
+        .should("have.prop", "href")
+        .and("equal", "https://restream.io/customers");
+    });
+
+    it("request without visiting", () => {
+      cy.contains("Customers").then($a => {
+        const href = $a.prop("href");
+
+        cy.request(href).then(resp => {
+          expect(resp.status).to.eq(200);
+          expect(resp.body).to.include(
+            "<title>Our Customers | Restream</title>",
+            "Over 2,000,000 streamers worldwide choose Restream"
+          );
+        });
+      });
+    });
+  });
+
+  // Pricing
+  describe('testing the target="/pricing" link', () => {
+    it("verify the href", () => {
+      cy.contains("Pricing")
+        .should("have.attr", "href")
+        .and("include", "/pricing");
+
+      cy.contains("Pricing")
+        .should("have.prop", "href")
+        .and("equal", "https://restream.io/pricing");
+    });
+
+    it("request without visiting", () => {
+      cy.contains("Pricing").then($a => {
+        const href = $a.prop("href");
+
+        cy.request(href).then(resp => {
+          expect(resp.status).to.eq(200);
+          expect(resp.body).to.include(
+            "<title>Plans & Pricing | Restream</title>",
+            "Pick the right Restream"
           );
         });
       });
