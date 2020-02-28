@@ -55,6 +55,32 @@ context("Tab Handling Anchor Links", () => {
     });
   });
 
+  // Scheduler
+  describe('testing the target="/scheduler" link', () => {
+    it("verify the href", () => {
+      cy.contains("Scheduler").should($a => {
+        expect($a).to.be.hidden;
+        expect($a).to.have.prop("href");
+        expect($a.prop("href")).eq("https://restream.io/scheduler");
+      });
+    });
+
+    it("request without visiting", () => {
+      cy.contains("Scheduler").then($a => {
+        const href = $a.prop("href");
+
+        cy.request(href).then(resp => {
+          expect(resp.status).to.eq(200);
+
+          expect(resp.body).to.include(
+            "<title>Schedule and Stream Pre-Recorded Videos Live | Restream</title>",
+            "<h1>Stream your recorded videos live</h1>"
+          );
+        });
+      });
+    });
+  });
+
   // About
   describe('testing the target="/about" link', () => {
     it("verify the href", () => {
