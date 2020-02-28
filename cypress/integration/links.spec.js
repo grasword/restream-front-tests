@@ -29,6 +29,32 @@ context("Tab Handling Anchor Links", () => {
     });
   });
 
+  // Chat
+  describe('testing the target="/chat" link', () => {
+    it("verify the href", () => {
+      cy.contains("Chat").should($a => {
+        expect($a).to.be.hidden;
+        expect($a).to.have.prop("href");
+        expect($a.prop("href")).eq("https://restream.io/chat");
+      });
+    });
+
+    it("request without visiting", () => {
+      cy.contains("Chat").then($a => {
+        const href = $a.prop("href");
+
+        cy.request(href).then(resp => {
+          expect(resp.status).to.eq(200);
+
+          expect(resp.body).to.include(
+            "<title>Cross-Platform Chat | Restream</title>",
+            "<h1>Engage viewers in a multi chat</h1>"
+          );
+        });
+      });
+    });
+  });
+
   // About
   describe('testing the target="/about" link', () => {
     it("verify the href", () => {
