@@ -22,7 +22,7 @@ context("Tab Handling Anchor Links", () => {
 
           expect(resp.body).to.include(
             "<title>Reach a Wider Audience with Multistreaming | Restream</title>",
-            "Reach a wider audience by streaming to multiple platforms simultaneously."
+            "<div>Reach a wider audience by streaming to multiple platforms simultaneously.</div>"
           );
         });
       });
