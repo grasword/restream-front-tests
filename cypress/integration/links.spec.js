@@ -81,6 +81,32 @@ context("Tab Handling Anchor Links", () => {
     });
   });
 
+  // Analytics
+  describe('testing the target="/analytics" link', () => {
+    it("verify the href", () => {
+      cy.contains("Analytics").should($a => {
+        expect($a).to.be.hidden;
+        expect($a).to.have.prop("href");
+        expect($a.prop("href")).eq("https://restream.io/analytics");
+      });
+    });
+
+    it("request without visiting", () => {
+      cy.contains("Analytics").then($a => {
+        const href = $a.prop("href");
+
+        cy.request(href).then(resp => {
+          expect(resp.status).to.eq(200);
+
+          expect(resp.body).to.include(
+            "<title>Analyze Your Stream Performance | Restream</title>",
+            "<h1>Measure your success</h1>"
+          );
+        });
+      });
+    });
+  });
+
   // About
   describe('testing the target="/about" link', () => {
     it("verify the href", () => {
