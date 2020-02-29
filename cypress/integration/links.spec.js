@@ -1,3 +1,5 @@
+import * as testData from "../../testData/testData";
+
 context("Tab Handling Anchor Links", () => {
   beforeEach(() => {
     cy.visit("/");
