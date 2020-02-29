@@ -5,7 +5,7 @@ context("Tab Handling Anchor Links", () => {
     cy.visit("/");
   });
 
-  testData.productsBtn.forEach(data => {
+  testData.menuBtns.forEach(data => {
     describe(`testing the target=/${data.name} link`, () => {
       it("verify the href", () => {
         cy.contains(`${data.name}`).should($a => {

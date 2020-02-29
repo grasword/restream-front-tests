@@ -1,4 +1,4 @@
-export const productsBtn = [
+export const menuBtns = [
   {
     name: "Multistreaming",
     link: "https://restream.io/multistreaming",
