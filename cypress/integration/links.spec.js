@@ -9,7 +9,8 @@ context("Tab Handling Anchor Links", () => {
     describe(`testing the target=/${data.name} link`, () => {
       it("verify the href", () => {
         cy.contains(`${data.name}`).should($a => {
-          expect($a).to.be.hidden;
+          data.visible ? expect($a).to.be.visible : expect($a).to.be.hidden;
+
           expect($a).to.have.prop("href");
           expect($a.prop("href")).eq(`${data.link}`);
         });
@@ -22,28 +23,8 @@ context("Tab Handling Anchor Links", () => {
           cy.request(href).then(resp => {
             expect(resp.status).to.eq(200);
 
-            expect(resp.body).to.include(`${data.title}`, `${data.text}`);
-          });
-        });
-      });
-    });
-  });
-
-  testData.menuBtns.forEach(data => {
-    describe(`testing the target=/${data.name} link`, () => {
-      it("verify the href", () => {
-        cy.contains(`${data.name}`)
-          .should("have.prop", "href")
-          .and("equal", `${data.link}`);
-      });
-
-      it("request without visiting", () => {
-        cy.contains(`${data.name}`).then($a => {
-          const href = $a.prop("href");
-
-          cy.request(href).then(resp => {
-            expect(resp.status).to.eq(200);
-            expect(resp.body).to.include(`${data.title}`, `${data.text}`);
+            expect(resp.body).to.include(`${data.title}`);
+            expect(resp.body).to.include(`${data.text}`);
           });
         });
       });
