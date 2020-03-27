@@ -36,7 +36,7 @@ context("Header links", () => {
           .then($a => {
             const href = $a.prop("href");
 
-            cy.request(anchor.href).then(resp => {
+            cy.request(href).then(resp => {
               expect(resp.status).to.eq(200);
               expect(resp.body).to.include(anchor.title);
               expect(resp.body).to.include(anchor.text);
