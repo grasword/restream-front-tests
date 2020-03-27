@@ -5,7 +5,7 @@ export const headerLinks = [
     title:
       "<title>Reach a Wider Audience with Multistreaming | Restream</title>",
     text:
-      "Reach a wider audience by streaming to multiple platforms simultaneously.</div>",
+      "Reach a wider audience by streaming to multiple platforms at the same time.</div>",
     isVisible: false
   },
   {
