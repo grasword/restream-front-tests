@@ -1,3 +1,4 @@
 {
-  "baseUrl": "https://restream.io/"
+  "baseUrl": "https://restream.io/",
+  "watchForFileChanges": false
 }
