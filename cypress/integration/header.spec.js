@@ -6,11 +6,11 @@ context("Header links", () => {
   });
 
   describe("testing links", () => {
-    headerLinks.forEach(anchor => {
+    headerLinks.forEach((anchor) => {
       it(`'${anchor.name}' have valid href`, () => {
         cy.get(".menu")
           .contains(anchor.name)
-          .should($a => {
+          .should(($a) => {
             expect($a).to.have.prop("href");
             expect($a.prop("href")).eq(anchor.href);
           });
@@ -20,7 +20,7 @@ context("Header links", () => {
         it(`'${anchor.name}' is hidden`, () => {
           cy.get(".menu")
             .contains(anchor.name)
-            .should($a => {
+            .should(($a) => {
               expect($a).to.be.hidden;
             });
         });
@@ -29,14 +29,14 @@ context("Header links", () => {
   });
 
   describe("request without visiting", () => {
-    headerLinks.forEach(anchor => {
+    headerLinks.forEach((anchor) => {
       it(`'${anchor.name}' have valid response`, () => {
         cy.get(".menu")
           .contains(anchor.name)
-          .then($a => {
+          .then(($a) => {
             const href = $a.prop("href");
 
-            cy.request(href).then(resp => {
+            cy.request(href).then((resp) => {
               expect(resp.status).to.eq(200);
               expect(resp.body).to.include(anchor.title);
               expect(resp.body).to.include(anchor.text);
