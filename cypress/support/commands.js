@@ -23,3 +23,11 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("login", (email, password) => {
+  cy.request({
+    method: "POST",
+    url: "https://restream.io/api/auth/ajax_check_ip",
+    body: { email: email, password: password },
+  });
+});
