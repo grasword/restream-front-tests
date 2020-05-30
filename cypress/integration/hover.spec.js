@@ -1,22 +1,22 @@
-context("Header actions", () => {
+context('Header actions', () => {
   beforeEach(() => {
-    cy.visit("/");
-  });
+    cy.visit('/')
+  })
 
-  describe("Checks dropdown", () => {
-    it("Products dropdown", () => {
-      cy.get(".jsSubMenuButton").should("not.have.class", "is-active");
+  describe('Checks dropdown', () => {
+    it('Products dropdown', () => {
+      cy.get('.jsSubMenuButton').should('not.have.class', 'is-active')
 
-      cy.get(".menu")
-        .contains("Products")
-        .click();
+      cy.get('.menu')
+        .contains('Products')
+        .click()
 
-      cy.get(".jsSubMenuButton").should("have.class", "is-active");
+      cy.get('.jsSubMenuButton').should('have.class', 'is-active')
 
-      cy.get(".submenu").invoke("show");
-      cy.get(".menu")
-        .contains("Chat")
-        .should('be.visible');
-    });
-  });
-});
+      cy.get('.submenu').invoke('show')
+      cy.get('.menu')
+        .contains('Chat')
+        .should('be.visible')
+    })
+  })
+})
