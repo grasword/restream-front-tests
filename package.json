@@ -2,13 +2,21 @@
   "name": "restream-front",
   "version": "1.0.0",
   "description": "",
+  "license": "ISC",
+  "author": "",
   "main": "index.js",
   "scripts": {
-    "cypress": "cypress open"
+    "cypress": "cypress open",
+    "lint": "standard --verbose | snazzy",
+    "lint:fix": "standard --fix"
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
-    "cypress": "^4.0.2"
+    "babel-eslint": "10.1.0",
+    "cypress": "4.0.2",
+    "snazzy": "8.0.0",
+    "standard": "14.3.4"
+  },
+  "standard": {
+    "parser": "babel-eslint"
   }
 }
