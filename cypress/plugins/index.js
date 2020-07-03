@@ -15,7 +15,26 @@
 /**
  * @type {Cypress.PluginConfig}
  */
+
+const { writeFileSync } = require('fs')
+
 module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
+  // Disable fake camera for Chrome
+  on('before:browser:launch', (browser, launchOptions) => {
+    if (browser.name === 'chrome') {
+      launchOptions.args = launchOptions.args.filter((arg) => {
+        return arg !== '--use-fake-ui-for-media-stream' && arg !== '--use-fake-device-for-media-stream'
+      })
+      launchOptions.args.push('--allow-file-access-from-files')
+      writeFileSync('./log.txt', JSON.stringify(launchOptions.args))
+      return launchOptions
+    }
+  })
+  // on('before:browser:launch', (browser, launchOptions) => {
+  //   if (browser.family === 'firefox') {
+  //     writeFileSync('./log.txt', JSON.stringify(launchOptions))
+  //     launchOptions.preferences['media.navigator.streams.fake'] = true
+  //     return launchOptions
+  //   }
+  // })
 }
