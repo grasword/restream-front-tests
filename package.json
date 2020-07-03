@@ -12,15 +12,20 @@
   },
   "devDependencies": {
     "babel-eslint": "10.1.0",
-    "cypress": "4.0.2",
-    "eslint": "7.1.0",
+    "cypress": "4.9.0",
+    "cypress-commands": "1.1.0",
+    "cypress-file-upload": "4.0.7",
+    "eslint": "7.3.1",
     "eslint-config-standard": "14.1.1",
-    "eslint-plugin-import": "2.20.2",
+    "eslint-plugin-chai-friendly": "0.6.0",
+    "eslint-plugin-cypress": "2.11.1",
+    "eslint-plugin-import": "2.22.0",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-standard": "4.0.1"
   },
   "standard": {
     "parser": "babel-eslint"
-  }
+  },
+  "dependencies": {}
 }
