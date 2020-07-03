@@ -1,4 +1,5 @@
 {
   "baseUrl": "https://restream.io/",
-  "watchForFileChanges": false
+  "watchForFileChanges": false,
+  "experimentalFetchPolyfill": true
 }
