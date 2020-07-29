@@ -53,7 +53,7 @@ export const headerLinks = [
     name: 'Pricing',
     href: 'https://restream.io/pricing',
     title: '<title>Plans & Pricing | Restream</title>',
-    text: 'Pick the right Restream',
+    text: 'Pricing',
     isVisible: true
   }
 ]
@@ -96,5 +96,35 @@ export const footerLinks = [
     href: 'https://developers.restream.io/',
     title: '<title>Developer Portal - Restream</title>',
     text: 'These developer pages are designed for those interested'
+  }
+]
+// Logos
+export const logos = [
+  {
+    type: 'png',
+    path: 'img/logo/nani.png'
+  },
+  {
+    type: 'jpg',
+    path: 'img/logo/cats.jpg'
+  },
+  {
+    type: 'svg',
+    path: 'img/logo/yarn.svg'
+  }
+]
+// Backgrounds
+export const backgrounds = [
+  {
+    type: 'png',
+    path: 'img/background/aqua.png'
+  },
+  {
+    type: 'jpg',
+    path: 'img/background/fox.jpg'
+  },
+  {
+    type: 'svg',
+    path: 'img/background/waves.svg'
   }
 ]
