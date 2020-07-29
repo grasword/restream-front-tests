@@ -15,10 +15,14 @@
 /**
  * @type {Cypress.PluginConfig}
  */
+const {
+  addMatchImageSnapshotPlugin
+} = require('cypress-image-snapshot/plugin')
 
 const { writeFileSync } = require('fs')
 
 module.exports = (on, config) => {
+  addMatchImageSnapshotPlugin(on, config)
   // Disable fake camera for Chrome
   on('before:browser:launch', (browser, launchOptions) => {
     if (browser.name === 'chrome') {
