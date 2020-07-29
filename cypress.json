@@ -1,5 +1,6 @@
 {
   "baseUrl": "https://restream.io/",
   "watchForFileChanges": false,
-  "experimentalFetchPolyfill": true
+  "experimentalFetchPolyfill": true,
+  "video": false
 }
