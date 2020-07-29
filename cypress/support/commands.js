@@ -42,6 +42,7 @@ Cypress.Commands.add('setResolution', (size) => {
 
 require('@cypress/snapshot').register()
 
+// Upload File
 Cypress.Commands.add('upload_file', (fileName, type, selector) => {
   cy.get(selector).then((subject) => {
     cy.fixture(fileName, 'base64').then((content) => {
@@ -82,10 +83,81 @@ function b64toBlob (b64Data, contentType = '', sliceSize = 512) {
   return blob
 }
 
+// Login
 Cypress.Commands.add('login', (email, password) => {
   cy.request({
     method: 'POST',
     url: 'https://restream.io/api/auth/ajax_check_ip',
     body: { email: email, password: password }
   })
+})
+
+// Logo upload
+Cypress.Commands.add('logoUpload', (imgPath) => {
+  cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div', { log: false }).its('length').then(($length) => {
+    cy.get('#liveStudioOverlaysTab > section:nth-child(1) > div > input').attachFile(imgPath).trigger('input')
+    cy.wait('@postLogo').then(xhr => {
+      expect(xhr.status).eq(201)
+    })
+    cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div').its('length').should('eq', $length + 1)
+  })
+})
+
+// Delete logos
+Cypress.Commands.add('deleteLogos', () => {
+  const deleteLastLogo = function () {
+    return cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div', { log: false }).its('length').then(($length) => {
+      cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div').find('button[title="Remove"]').last().click()
+      cy.wait('@deleteLogo').then(xhr => {
+        expect(xhr.status).eq(200)
+      })
+      cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div').its('length').should('eq', $length - 1)
+    })
+  }
+
+  const deleteLogos = function () {
+    cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div', { log: false }).its('length').then(($length) => {
+      if ($length > 1) {
+        deleteLastLogo()
+        deleteLogos()
+      }
+    })
+  }
+
+  deleteLogos()
+})
+
+// Background upload
+Cypress.Commands.add('backgroundUpload', (imgPath) => {
+  cy.get(':nth-child(4) > .ImageSelect_root__Dgtcy > div', { log: false }).its('length').then(($length) => {
+    cy.get(':nth-child(4) > .ImageSelect_root__Dgtcy > input').attachFile(imgPath).trigger('input')
+    cy.wait('@postBackground').then((xhr) => {
+      expect(xhr.status).eq(201)
+    })
+    cy.get(':nth-child(4) > .ImageSelect_root__Dgtcy > div').its('length').should('eq', $length + 1)
+  })
+})
+
+// Delete backgrounds
+Cypress.Commands.add('deleteBackgrounds', () => {
+  const deleteLastBackground = function () {
+    return cy.get(':nth-child(4) > .ImageSelect_root__Dgtcy > div', { log: false }).its('length').then(($length) => {
+      cy.get(':nth-child(4) > .ImageSelect_root__Dgtcy > div').find('button[title="Remove"]').last().click()
+      cy.wait('@deleteBackground').then((xhr) => {
+        expect(xhr.status).eq(200)
+      })
+      cy.get(':nth-child(4) > .ImageSelect_root__Dgtcy > div').its('length').should('eq', $length - 1)
+    })
+  }
+
+  const deleteBackgrounds = function () {
+    cy.get(':nth-child(4) > .ImageSelect_root__Dgtcy > div', { log: false }).its('length').then(($length) => {
+      if ($length > 1) {
+        deleteLastBackground()
+        deleteBackgrounds()
+      }
+    })
+  }
+
+  deleteBackgrounds()
 })
