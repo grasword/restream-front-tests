@@ -1,45 +1,46 @@
+import { logos, backgrounds } from '../../../testData/testData'
+
 context('Image upload', () => {
   beforeEach(() => {
+    cy.setResolution([1920, 1080])
     cy.login(Cypress.env('email'), Cypress.env('password'))
     cy.visit('/live-studio?live-studio-paid')
     cy.get('#liveStudioOverlaysTabButton').click()
   })
 
-  it('upload logo', function () {
-    cy.server()
-    cy.route('POST', '/images/logos').as('postLogo')
+  describe('logos', () => {
+    beforeEach(() => {
+      cy.server()
+      cy.route('POST', '/images/logos').as('postLogo')
+      cy.route('DELETE', '/images/logos/*').as('deleteLogo')
 
-    cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div').its('length').then(($length) => {
-      cy.get('#liveStudioOverlaysTab > section:nth-child(1) > div > input').attachFile('img/nani.png').trigger('input')
-      cy.wait('@postLogo').then(xhr => {
-        expect(xhr.status).eq(201)
+      cy.deleteLogos()
+    })
+
+    logos.forEach(logo => {
+      it(`uploads logo with the '${logo.type}' extension`, function () {
+        cy.logoUpload(logo.path)
+        cy.wait(500) // Antipattern, temporary solution
+        cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div').last().matchImageSnapshot(`${logo.type}`)
       })
-      cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div').its('length').should('eq', $length + 1)
     })
   })
 
-  it('delete logo', () => {
-    cy.server()
-    cy.route('POST', '/images/logos').as('postLogo')
-    cy.route('DELETE', '/images/logos/*').as('deleteLogo')
+  describe('Backgrounds', () => {
+    beforeEach(() => {
+      cy.server()
+      cy.route('POST', '/images/backgrounds').as('postBackground')
+      cy.route('DELETE', '/images/backgrounds/*').as('deleteBackground')
 
-    cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div').its('length').then(($length) => {
-      // Upload the logo if there is none
-      if ($length <= 1) {
-        cy.get('#liveStudioOverlaysTab > section:nth-child(1) > div > input').attachFile('img/nani.png').trigger('input')
-        cy.wait('@postLogo').then(xhr => {
-          expect(xhr.status).eq(201)
-        })
-        cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div').its('length').should('eq', $length + 1)
-        $length = $length + 1
-      }
+      cy.deleteBackgrounds()
+    })
 
-      // Delete logo
-      cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div').find('button').last().click()
-      cy.wait('@deleteLogo').then(xhr => {
-        expect(xhr.status).eq(200)
+    backgrounds.forEach((background) => {
+      it(`uploads background with the '${background.type}' extension`, () => {
+        cy.backgroundUpload(background.path)
+        cy.wait(500) // Antipattern, temporary solution
+        cy.get(':nth-child(4) > .ImageSelect_root__Dgtcy > div').last().matchImageSnapshot(`background '${background.type}'`)
       })
-      cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div').its('length').should('eq', $length - 1)
     })
   })
 })
