@@ -7,14 +7,17 @@
   "main": "index.js",
   "scripts": {
     "cypress": "cypress open",
+    "test:update": "cypress open --env updateSnapshots=true",
     "lint": "eslint . --ext .js",
     "lint:fix": "npm run lint -- --fix"
   },
   "devDependencies": {
+    "@cypress/snapshot": "2.1.7",
     "babel-eslint": "10.1.0",
     "cypress": "4.9.0",
     "cypress-commands": "1.1.0",
     "cypress-file-upload": "4.0.7",
+    "cypress-image-snapshot": "3.1.1",
     "eslint": "7.3.1",
     "eslint-config-standard": "14.1.1",
     "eslint-plugin-chai-friendly": "0.6.0",
