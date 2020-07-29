@@ -2,6 +2,9 @@
 node_modules
 /dist
 cypress/integration/examples
+cypress/screenshots
+cypress/videos
+cypress/snapshots
 
 # local env files
 *.env.*
