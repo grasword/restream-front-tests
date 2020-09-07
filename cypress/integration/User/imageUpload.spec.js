@@ -8,7 +8,7 @@ context('Image upload', () => {
     cy.get('#liveStudioOverlaysTabButton').click()
   })
 
-  describe('logos', () => {
+  describe('Logos', () => {
     beforeEach(() => {
       cy.server()
       cy.route('POST', '/images/logos').as('postLogo')
@@ -20,8 +20,11 @@ context('Image upload', () => {
     logos.forEach(logo => {
       it(`uploads logo with the '${logo.type}' extension`, function () {
         cy.logoUpload(logo.path)
-        cy.wait(500) // Antipattern, temporary solution
-        cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div').last().matchImageSnapshot(`${logo.type}`)
+
+        cy.awaitEvent('load', ':nth-child(1) > .ImageSelect_root__Dgtcy > :nth-child(2) > button > img')
+          .then(() => {
+            cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div').last().matchImageSnapshot(`logo '${logo.type}'`)
+          })
       })
     })
   })
@@ -38,8 +41,11 @@ context('Image upload', () => {
     backgrounds.forEach((background) => {
       it(`uploads background with the '${background.type}' extension`, () => {
         cy.backgroundUpload(background.path)
-        cy.wait(500) // Antipattern, temporary solution
-        cy.get(':nth-child(4) > .ImageSelect_root__Dgtcy > div').last().matchImageSnapshot(`background '${background.type}'`)
+
+        cy.awaitEvent('load', ':nth-child(4) > .ImageSelect_root__Dgtcy > :nth-child(2) > button > img')
+          .then(() => {
+            cy.get(':nth-child(4) > .ImageSelect_root__Dgtcy > div').last().matchImageSnapshot(`background '${background.type}'`)
+          })
       })
     })
   })
