@@ -92,6 +92,18 @@ Cypress.Commands.add('login', (email, password) => {
   })
 })
 
+// Wait for image to load
+Cypress.Commands.add('awaitEvent', (event, selector) => {
+  cy.document().then($document => {
+    return new Cypress.Promise(resolve => {
+      const el = $document.querySelector(selector)
+      el.addEventListener(event, (event) => {
+        resolve()
+      })
+    })
+  })
+})
+
 // Logo upload
 Cypress.Commands.add('logoUpload', (imgPath) => {
   cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div', { log: false }).its('length').then(($length) => {
