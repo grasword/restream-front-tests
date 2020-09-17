@@ -113,6 +113,21 @@ export const logos = [
     path: 'img/logo/yarn.svg'
   }
 ]
+// Overlays
+export const overlays = [
+  {
+    type: 'png',
+    path: 'img/overlay/spidermans.png'
+  },
+  {
+    type: 'jpg',
+    path: 'img/overlay/haiya.jpg'
+  },
+  {
+    type: 'svg',
+    path: 'img/overlay/pikachu.svg'
+  }
+]
 // Backgrounds
 export const backgrounds = [
   {
