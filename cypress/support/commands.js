@@ -40,8 +40,6 @@ Cypress.Commands.add('setResolution', (size) => {
   }
 })
 
-require('@cypress/snapshot').register()
-
 // Upload File
 Cypress.Commands.add('upload_file', (fileName, type, selector) => {
   cy.get(selector).then((subject) => {
@@ -92,7 +90,7 @@ Cypress.Commands.add('login', (email, password) => {
   })
 })
 
-// Wait for image to load
+// Wait for event
 Cypress.Commands.add('awaitEvent', (event, selector) => {
   cy.document().then($document => {
     return new Cypress.Promise(resolve => {
@@ -104,27 +102,46 @@ Cypress.Commands.add('awaitEvent', (event, selector) => {
   })
 })
 
-// Logo upload
-Cypress.Commands.add('logoUpload', (imgPath) => {
-  cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div', { log: false }).its('length').then(($length) => {
-    cy.get('#liveStudioOverlaysTab > section:nth-child(1) > div > input').attachFile(imgPath).trigger('input')
-    cy.wait('@postLogo').then(xhr => {
+// Image upload
+const imageUpload = (selector, route, path) => {
+  cy.get(`${selector} > .ImageSelect_root__Dgtcy > div`, { log: false }).its('length').then(($length) => {
+    cy.get(`${selector} > .ImageSelect_root__Dgtcy > input`).attachFile(path).trigger('input', { force: true })
+    cy.wait(route).then(xhr => {
       expect(xhr.status).eq(201)
     })
-    cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div').its('length').should('eq', $length + 1)
+    cy.get(`${selector} > .ImageSelect_root__Dgtcy > div`).its('length').should('eq', $length + 1)
   })
+}
+
+// Logo upload
+Cypress.Commands.add('logoUpload', (imgPath) => {
+  imageUpload(':nth-child(1)', '@postLogo', imgPath)
 })
 
+// Overlay upload
+Cypress.Commands.add('overlayUpload', (imgPath) => {
+  imageUpload(':nth-child(2)', '@postOverlay', imgPath)
+})
+
+// Background upload
+Cypress.Commands.add('backgroundUpload', (imgPath) => {
+  imageUpload(':nth-child(4)', '@postBackground', imgPath)
+})
+
+// Delete Image
+const deleteImage = (selector, route) => {
+  cy.get(`${selector} > .ImageSelect_root__Dgtcy > div`, { log: false }).its('length').then(($length) => {
+    cy.get(`${selector} > .ImageSelect_root__Dgtcy > div`).find('button[title="Remove"]').last().click()
+    cy.wait(route).then(xhr => {
+      expect(xhr.status).eq(200)
+    })
+    cy.get(`${selector} > .ImageSelect_root__Dgtcy > div`).its('length').should('eq', $length - 1)
+  })
+}
 // Delete logos
 Cypress.Commands.add('deleteLogos', () => {
-  const deleteLastLogo = function () {
-    return cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div', { log: false }).its('length').then(($length) => {
-      cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div').find('button[title="Remove"]').last().click()
-      cy.wait('@deleteLogo').then(xhr => {
-        expect(xhr.status).eq(200)
-      })
-      cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div').its('length').should('eq', $length - 1)
-    })
+  const deleteLastLogo = () => {
+    deleteImage(':nth-child(1)', '@deleteLogo')
   }
 
   const deleteLogos = function () {
@@ -139,27 +156,28 @@ Cypress.Commands.add('deleteLogos', () => {
   deleteLogos()
 })
 
-// Background upload
-Cypress.Commands.add('backgroundUpload', (imgPath) => {
-  cy.get(':nth-child(4) > .ImageSelect_root__Dgtcy > div', { log: false }).its('length').then(($length) => {
-    cy.get(':nth-child(4) > .ImageSelect_root__Dgtcy > input').attachFile(imgPath).trigger('input')
-    cy.wait('@postBackground').then((xhr) => {
-      expect(xhr.status).eq(201)
+// Delete overlays
+Cypress.Commands.add('deleteOverlays', () => {
+  const deleteLastOverlay = () => {
+    deleteImage(':nth-child(2)', '@deleteOverlay')
+  }
+
+  const deleteOverlays = function () {
+    cy.get(':nth-child(2) > .ImageSelect_root__Dgtcy > div', { log: false }).its('length').then(($length) => {
+      if ($length > 1) {
+        deleteLastOverlay()
+        deleteOverlays()
+      }
     })
-    cy.get(':nth-child(4) > .ImageSelect_root__Dgtcy > div').its('length').should('eq', $length + 1)
-  })
+  }
+
+  deleteOverlays()
 })
 
 // Delete backgrounds
 Cypress.Commands.add('deleteBackgrounds', () => {
-  const deleteLastBackground = function () {
-    return cy.get(':nth-child(4) > .ImageSelect_root__Dgtcy > div', { log: false }).its('length').then(($length) => {
-      cy.get(':nth-child(4) > .ImageSelect_root__Dgtcy > div').find('button[title="Remove"]').last().click()
-      cy.wait('@deleteBackground').then((xhr) => {
-        expect(xhr.status).eq(200)
-      })
-      cy.get(':nth-child(4) > .ImageSelect_root__Dgtcy > div').its('length').should('eq', $length - 1)
-    })
+  const deleteLastBackground = () => {
+    deleteImage(':nth-child(4)', '@deleteBackground')
   }
 
   const deleteBackgrounds = function () {
