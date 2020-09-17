@@ -1,4 +1,4 @@
-import { logos, backgrounds } from '../../../testData/testData'
+import { logos, backgrounds, overlays } from '../../../testData/testData'
 
 context('Image upload', () => {
   beforeEach(() => {
@@ -18,12 +18,33 @@ context('Image upload', () => {
     })
 
     logos.forEach(logo => {
-      it(`uploads logo with the '${logo.type}' extension`, function () {
+      it(`uploads logo with the '${logo.type}' extension`, () => {
         cy.logoUpload(logo.path)
 
         cy.awaitEvent('load', ':nth-child(1) > .ImageSelect_root__Dgtcy > :nth-child(2) > button > img')
           .then(() => {
             cy.get(':nth-child(1) > .ImageSelect_root__Dgtcy > div').last().matchImageSnapshot(`logo '${logo.type}'`)
+          })
+      })
+    })
+  })
+
+  describe('Overlays', () => {
+    beforeEach(() => {
+      cy.server()
+      cy.route('POST', '/images/overlays').as('postOverlay')
+      cy.route('DELETE', '/images/overlays/*').as('deleteOverlay')
+
+      cy.deleteOverlays()
+    })
+
+    overlays.forEach(overlay => {
+      it(`uploads overlay with the '${overlay.type}' extension`, () => {
+        cy.overlayUpload(overlay.path)
+
+        cy.awaitEvent('load', ':nth-child(2) > .ImageSelect_root__Dgtcy > :nth-child(2) > button > img')
+          .then(() => {
+            cy.get(':nth-child(2) > .ImageSelect_root__Dgtcy > div').last().matchImageSnapshot(`overlay '${overlay.type}'`)
           })
       })
     })
