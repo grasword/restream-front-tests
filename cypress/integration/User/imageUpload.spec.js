@@ -14,12 +14,12 @@ context('Image upload', () => {
       cy.route('POST', '/images/logos').as('postLogo')
       cy.route('DELETE', '/images/logos/*').as('deleteLogo')
 
-      cy.deleteLogos()
+      cy.deleteImages(':nth-child(1)', '@deleteLogo')
     })
 
     logos.forEach(logo => {
       it(`uploads logo with the '${logo.type}' extension`, () => {
-        cy.logoUpload(logo.path)
+        cy.imageUpload(':nth-child(1)', '@postLogo', logo.path)
 
         cy.awaitEvent('load', ':nth-child(1) > .ImageSelect_root__Dgtcy > :nth-child(2) > button > img')
           .then(() => {
@@ -35,12 +35,12 @@ context('Image upload', () => {
       cy.route('POST', '/images/overlays').as('postOverlay')
       cy.route('DELETE', '/images/overlays/*').as('deleteOverlay')
 
-      cy.deleteOverlays()
+      cy.deleteImages(':nth-child(2)', '@deleteOverlay')
     })
 
     overlays.forEach(overlay => {
       it(`uploads overlay with the '${overlay.type}' extension`, () => {
-        cy.overlayUpload(overlay.path)
+        cy.imageUpload(':nth-child(2)', '@postOverlay', overlay.path)
 
         cy.awaitEvent('load', ':nth-child(2) > .ImageSelect_root__Dgtcy > :nth-child(2) > button > img')
           .then(() => {
@@ -56,12 +56,12 @@ context('Image upload', () => {
       cy.route('POST', '/images/backgrounds').as('postBackground')
       cy.route('DELETE', '/images/backgrounds/*').as('deleteBackground')
 
-      cy.deleteBackgrounds()
+      cy.deleteImages(':nth-child(4)', '@deleteBackground')
     })
 
     backgrounds.forEach((background) => {
       it(`uploads background with the '${background.type}' extension`, () => {
-        cy.backgroundUpload(background.path)
+        cy.imageUpload(':nth-child(4)', '@postBackground', background.path)
 
         cy.awaitEvent('load', ':nth-child(4) > .ImageSelect_root__Dgtcy > :nth-child(2) > button > img')
           .then(() => {
